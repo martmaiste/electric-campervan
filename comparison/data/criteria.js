@@ -15,7 +15,8 @@ const CRITERIA = [
   { id: "height_mm",          label: "Height",         unit: "mm",  direction: "high", weight: 5,  hint: "Standing / sleeping headroom" },
   { id: "width_mm",           label: "Width",          unit: "mm",  direction: "high", weight: 4 },
   { id: "length_mm",           label: "Length",         unit: "mm",  direction: "low",  weight: 4,  hint: "Shorter = easier to park and drive" },
-  { id: "turning_circle_m",    label: "Turning circle", unit: "m",   direction: "low",  weight: 4,  hint: "Full turning circle diameter - smaller = easier to park and manoeuvre; long vans suffer here" },
+  { id: "turning_curb_m",      label: "Turn circle (curb)", unit: "m", direction: "low",  weight: 2, hint: "Curb-to-curb turning diameter (body/tires only) - smaller = easier to park and manoeuvre" },
+
   { id: "price_eur",          label: "Base price",     unit: "€",   direction: "low",  weight: 5,  hint: "Approx. base price, no fit-out" },
   { id: "motor_kw",           label: "Motor",          unit: "kW",  direction: "high", weight: 3 },
   { id: "kerb_weight_kg",      label: "Kerb weight",    unit: "kg",  direction: "low",  weight: 3, hint: "Vehicle weight as-delivered incl. battery - lighter = more payload headroom" },
