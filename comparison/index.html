@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EV Camper Van Comparison</title>
+<style>
+:root {
+  --bg: #f2f4f7; --panel: #ffffff; --panel2: #eef1f5;
+  --text: #1c2430; --muted: #5f6e7f; --line: #d8dee4;
+  --accent: #15803d; --warn: #b45309;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); }
+code { color: var(--accent); }
+header { padding: 18px 22px 12px; border-bottom: 1px solid var(--line); }
+h1 { margin: 0 0 4px; font-size: 20px; }
+header .sub { color: var(--muted); margin: 0; }
+.layout { display: grid; grid-template-columns: 320px 1fr; gap: 16px; padding: 16px 22px 32px; align-items: start; }
+aside section, main section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 10px; }
+.criterion-row { display: grid; grid-template-columns: 1fr 26px; gap: 6px 8px; align-items: center; margin-bottom: 10px; }
+.criterion-row .label { font-size: 13px; }
+.criterion-row .w { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+.criterion-row input[type=range] { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); margin: 0; }
+.van-toggle { display: flex; align-items: center; gap: 8px; padding: 6px 6px; border-radius: 6px; cursor: pointer; user-select: none; }
+.van-toggle:hover { background: var(--panel2); }
+.van-toggle .name { flex: 1; font-size: 13px; }
+.badge { font-size: 11px; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.badge.warn { color: var(--warn); border-color: var(--warn); }
+.badge.concept { color: #2563eb; border-color: #2563eb; }
+.badge.min { color: #dc2626; border-color: #dc2626; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { padding: 7px 9px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+th { color: var(--muted); font-size: 12px; font-weight: 500; }
+th:first-child, td:first-child { text-align: left; }
+th.sortable { cursor: pointer; }
+th.sortable:hover { color: var(--text); }
+th.sorted { color: var(--accent); font-weight: 700; }
+tr.van { cursor: pointer; }
+tr.van:hover td { filter: brightness(1.35); }
+tr.selected td { box-shadow: inset 0 0 0 2px var(--accent); }
+td { font-size: 13px; }
+.rank { color: var(--muted); }
+.total { font-weight: 700; }
+.barwrap { display: flex; flex-direction: column; gap: 8px; }
+.bar-row { display: grid; grid-template-columns: 200px 1fr 80px; gap: 10px; align-items: center; }
+.bar-row .name { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-bg { background: var(--panel2); border-radius: 4px; height: 14px; overflow: hidden; }
+.bar { height: 100%; border-radius: 4px; background: var(--accent); }
+.bar-row .val { text-align: right; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+select { accent-color: var(--accent); background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; font-size: 13px; }
+details { color: var(--muted); }
+summary { cursor: pointer; font-size: 13px; }
+.hint { color: var(--muted); font-size: 12px; }
+.detail .kv { display: grid; grid-template-columns: 170px 1fr; gap: 3px 10px; margin: 10px 0; font-variant-numeric: tabular-nums; }
+.detail .kv div:nth-child(odd) { color: var(--muted); }
+a { color: var(--accent); }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .bar-row { grid-template-columns: 120px 1fr 70px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>⚡ EV Camper Van Comparison</h1>
+  <p class="sub">Tick candidates on the left and drag the importance sliders — the scoreboard re-scores live. Click a row for notes &amp; sources. Data lives in <code>data/</code>.</p>
+</header>
+
+<div class="layout">
+  <aside>
+    <section>
+      <h2>Importance (0–10)</h2>
+      <div id="weights"></div>
+    </section>
+    <section>
+      <h2>Candidates</h2>
+      <div id="toggles"></div>
+    </section>
+    <section>
+      <details>
+        <summary>How scoring works</summary>
+        <p class="hint" style="margin:8px 0 0">
+          Each criterion is min–max normalized across the vans you currently have included
+          (0 = worst, 100 = best; “less is better” criteria are flipped).
+          Total score = weighted average over all criteria at your slider values.
+          Missing values score 0 — fill data in before comparing hard.
+          ⚠ = figures not yet verified against the spec sheet.
+          Criteria with a hard minimum are flagged red when a van falls below — you can hide those vans.
+        </p>
+      </details>
+    </section>
+  </aside>
+
+  <main>
+    <section>
+      <h2>Key metric: <select id="metric"></select></h2>
+      <div id="chart" class="barwrap"></div>
+    </section>
+
+    <section>
+      <h2>Scoreboard</h2>
+      <p class="hint" style="margin:0 0 8px">Click a column header to sort - 1st click: descending, 2nd: ascending, 3rd: back to rank order.</p>
+      <div class="tablewrap" id="table"></div>
+    </section>
+
+    <section id="detail" class="detail" hidden></section>
+  </main>
+</div>
+
+<script src="data/criteria.js"></script>
+<script src="data/vans.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+
+const state = {
+  weights: Object.fromEntries(CRITERIA.map(c => [c.id, c.weight])),
+  included: new Set(VANS.map(v => v.id)),
+  metric: "range_km",
+  selected: null,
+  hideBelowMin: false,
+  sort: { key: null, dir: "desc" },
+};
+
+function fmt(v, unit) {
+  if (v == null) return "–";
+  const n = Number(v).toLocaleString("en");
+  if (unit === "€") return "€" + n;
+  return n + (unit ? " " + unit : "");
+}
+
+function minViolations(v) {
+  return CRITERIA.filter(c => c.min != null && v.criteria && v.criteria[c.id] != null && v.criteria[c.id] < c.min);
+}
+
+function compute() {
+  let inc = VANS.filter(v => state.included.has(v.id));
+  if (state.hideBelowMin) inc = inc.filter(v => minViolations(v).length === 0);
+  const res = {};
+  const totalW = CRITERIA.reduce((a, c) => a + state.weights[c.id], 0);
+  for (const v of inc) {
+    const cells = {};
+    for (const c of CRITERIA) {
+      const vals = inc.map(x => x.criteria && x.criteria[c.id]).filter(n => typeof n === "number");
+      const raw = v.criteria && v.criteria[c.id];
+      let s;
+      if (typeof raw !== "number") s = null;
+      else if (vals.length < 2) s = 1;
+      else {
+        const min = Math.min(...vals), max = Math.max(...vals);
+        s = max === min ? 1 : c.direction === "high" ? (raw - min) / (max - min) : (max - raw) / (max - min);
+      }
+      cells[c.id] = s;
+    }
+    const acc = CRITERIA.reduce((a, c) => a + (cells[c.id] != null ? state.weights[c.id] * cells[c.id] : 0), 0);
+    cells.total = totalW > 0 ? 100 * acc / totalW : 0;
+    res[v.id] = cells;
+  }
+  return { inc, res };
+}
+
+function buildControls() {
+  const w = $("#weights");
+  for (const c of CRITERIA) {
+    const row = document.createElement("div");
+    row.className = "criterion-row";
+    const label = document.createElement("label");
+    label.className = "label";
+    label.textContent = c.label + (c.unit ? " (" + c.unit + ")" : "");
+    if (c.hint) label.title = c.hint;
+    const val = document.createElement("span");
+    val.className = "w";
+    val.textContent = state.weights[c.id];
+    const input = document.createElement("input");
+    input.type = "range"; input.min = 0; input.max = 10; input.step = 1;
+    input.value = state.weights[c.id];
+    input.addEventListener("input", () => {
+      state.weights[c.id] = +input.value;
+      val.textContent = input.value;
+      renderResults();
+    });
+    row.append(label, val, input);
+    w.appendChild(row);
+  }
+
+  const tg = $("#toggles");
+  const hideRow = document.createElement("label");
+  hideRow.className = "van-toggle";
+  const hideBox = document.createElement("input");
+  hideBox.type = "checkbox";
+  hideBox.checked = state.hideBelowMin;
+  const hideName = document.createElement("span");
+  hideName.className = "name";
+  hideName.textContent = "Hide vans below minimums";
+  hideRow.append(hideBox, hideName);
+  hideBox.addEventListener("change", () => { state.hideBelowMin = hideBox.checked; renderResults(); });
+  tg.appendChild(hideRow);
+  for (const v of VANS) {
+    const label = document.createElement("label");
+    label.className = "van-toggle";
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.checked = state.included.has(v.id);
+    const name = document.createElement("span");
+    name.className = "name";
+    name.textContent = v.name;
+    label.append(box, name);
+    if (v.status === "concept") {
+      const b = document.createElement("span");
+      b.className = "badge concept";
+      b.textContent = "concept";
+      label.appendChild(b);
+    } else if (v.verified === false) {
+      const b = document.createElement("span");
+      b.className = "badge warn";
+      b.textContent = "⚠ verify";
+      label.appendChild(b);
+    }
+    const viol = minViolations(v);
+    if (viol.length) {
+      const b = document.createElement("span");
+      b.className = "badge min";
+      b.textContent = "✗ below min: " + viol.map(c => c.label).join(", ");
+      label.appendChild(b);
+    }
+    box.addEventListener("change", () => {
+      box.checked ? state.included.add(v.id) : state.included.delete(v.id);
+      renderResults();
+    });
+    tg.appendChild(label);
+  }
+
+  const sel = $("#metric");
+  for (const c of CRITERIA) {
+    const o = document.createElement("option");
+    o.value = c.id;
+    o.textContent = c.label;
+    sel.appendChild(o);
+  }
+  sel.value = state.metric;
+  sel.addEventListener("change", () => { state.metric = sel.value; renderResults(); });
+}
+
+function renderResults() {
+  const { inc, res } = compute();
+  const sorted = inc.slice().sort((a, b) => res[b.id].total - res[a.id].total);
+  const rankOf = {};
+  sorted.forEach((v, i) => { rankOf[v.id] = i + 1; });
+  let display = sorted.slice();
+  if (state.sort.key) {
+    const key = state.sort.key, dir = state.sort.dir;
+    const valOf = v => {
+      if (key === "rank") return rankOf[v.id];
+      if (key === "name") return v.name;
+      if (key === "total") return res[v.id].total;
+      const raw = v.criteria && v.criteria[key];
+      return typeof raw === "number" ? raw : null;
+    };
+    display.sort((a, b) => {
+      const va = valOf(a), vb = valOf(b);
+      if (va == null && vb == null) return 0;
+      if (va == null) return 1;
+      if (vb == null) return -1;
+      const cmp = typeof va === "string" ? va.localeCompare(vb) : va - vb;
+      return dir === "desc" ? -cmp : cmp;
+    });
+  }
+
+  // bar chart
+  const cDef = CRITERIA.find(c => c.id === state.metric);
+  const nums = sorted.map(x => x.criteria && x.criteria[state.metric]).filter(n => typeof n === "number");
+  const max = nums.length ? Math.max(...nums) : 0;
+  $("#chart").innerHTML = sorted.length
+    ? sorted.map(v => {
+        const val = v.criteria && v.criteria[state.metric];
+        const pct = val != null && max > 0 ? Math.max(2, 100 * val / max) : 0;
+        return '<div class="bar-row">' +
+          '<span class="name" title="' + v.name + '">' + v.name + '</span>' +
+          '<div class="bar-bg"><div class="bar" style="width:' + pct + '%"></div></div>' +
+          '<span class="val">' + (val == null ? "–" : fmt(val, cDef.unit)) + '</span>' +
+          '</div>';
+      }).join("")
+    : '<p class="hint">No candidates selected.</p>';
+
+  // scoreboard table
+  const arrow = key => state.sort.key === key ? (state.sort.dir === "desc" ? " &#x2193;" : " &#x2191;") : "";
+  const th = (key, label, unit, title) =>
+    '<th class="sortable' + (state.sort.key === key ? " sorted" : "") + '" data-key="' + key + '" title="' + (title || label) + '">' + label + arrow(key) +
+    (unit ? "<br><span class=\"hint\">" + unit + "</span>" : "") + "</th>";
+  const head = "<tr>" + th("rank", "#", null, "Weighted rank") + th("name", "Van", null, "Van name") +
+    CRITERIA.map(c => th(c.id, c.label, c.unit || "", c.hint || c.label)).join("") +
+    th("total", "Total", null, "Weighted total score") + "</tr>";
+  const rows = display.map(v => {
+    const cells = CRITERIA.map(c => {
+      const s = res[v.id][c.id];
+      const raw = v.criteria && v.criteria[c.id];
+      const below = c.min != null && typeof raw === "number" && raw < c.min;
+      const bg = s == null ? "transparent" : below ? "hsla(0 85% 45% / .55)" : "hsla(" + Math.round(120 * s) + " 70% 50% / .28)";
+      const title = s == null ? "no data" : Math.round(s * 100) + "/100" + (below ? " — below minimum (" + c.min + " " + c.unit + ")" : "");
+      return '<td style="background:' + bg + '" title="' + title + '">' + (below ? "✗ " : "") + fmt(raw, c.unit) + "</td>";
+    }).join("");
+    return '<tr class="van' + (state.selected === v.id ? " selected" : "") + '" data-id="' + v.id + '">' +
+      '<td class="rank">' + rankOf[v.id] + "</td><td>" + v.name + "</td>" + cells +
+      '<td class="total">' + res[v.id].total.toFixed(1) + "</td></tr>";
+  }).join("");
+  $("#table").innerHTML = sorted.length ? "<table>" + head + rows + "</table>" : '<p class="hint">No candidates selected.</p>';
+  document.querySelectorAll("tr.van").forEach(tr => tr.addEventListener("click", () => {
+    state.selected = tr.dataset.id;
+    renderResults();
+  }));
+  document.querySelectorAll("#table th.sortable").forEach(thEl => thEl.addEventListener("click", () => {
+    const key = thEl.dataset.key;
+    if (state.sort.key !== key) state.sort = { key: key, dir: "desc" };
+    else if (state.sort.dir === "desc") state.sort = { key: key, dir: "asc" };
+    else state.sort = { key: null, dir: "desc" };
+    renderResults();
+  }));
+
+  // detail panel
+  const d = $("#detail");
+  const v = VANS.find(x => x.id === state.selected);
+  if (v && res[v.id]) {
+    const kvs = CRITERIA.map(c =>
+      "<div>" + c.label + "</div><div>" + (v.criteria && v.criteria[c.id] != null ? fmt(v.criteria[c.id], c.unit) : "–") + "</div>"
+    ).join("");
+    d.hidden = false;
+    d.innerHTML = "<h2>" + v.name + " — " + res[v.id].total.toFixed(1) + " pts" +
+      (v.verified === false ? ' <span class="badge warn">⚠ values need verification</span>' : "") + "</h2>" +
+      '<div class="kv">' + kvs + "</div>" +
+      (v.notes ? "<p>" + v.notes + "</p>" : "") +
+      (v.sources && v.sources.length
+        ? '<p class="hint">Sources: ' + v.sources.map(s => '<a href="' + s + '" target="_blank" rel="noopener">' + s.replace("https://", "") + "</a>").join(" · ") + "</p>" : "");
+  } else {
+    d.hidden = true;
+  }
+}
+
+buildControls();
+renderResults();
+</script>
+</body>
+</html>
