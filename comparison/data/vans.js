@@ -15,8 +15,8 @@ const VANS = [
       height_mm: 2700, width_mm: 1920, length_mm: 6300, turning_curb_m: 12.3,
       price_eur: 73115, motor_kw: 198,
     },
-    notes: "Finnish list 28.8.2026 (VAT 25.5% incl., excl. vehicle tax): 425 BEV L4H3 Trend, 198 kW (269 hp), 73,115 EUR (the 135 kW row is 71,615). GVW 4,250 kg, payload 1,130 kg (incl. 75 kg driver) - kerb ~3,120 kg derived, not stated. Range 388 km WLTP (24.7 kWh/100 km). Battery 96 kWh (list ambiguous net/gross). Charging confirmed: DC 180 kW, AC OBC 22 kW (option), ProPower Onboard 2.3 kW (10 A) AC outlet (option J3EAJ, 1,700 EUR in the list) - not in the Finnish list. Cargo width/height, overall dims and curb-to-curb turning circle carried over from the seed entry - unverified (cargo length corrected to 4,256 mm per L4H3 spec - seed 3,630 mm was wrong). N2 towing not stated; H3 roof only exists on L4. 96 kWh also exists on 390 L4H3 (780 kg, 393 km, from 71,115) and 350 L4H3 (405 kg, 329 km, from 69,715) - see research/PL-ford-e-transit.md.",
-    sources: ["PL-ford-e-transit.pdf", "research/PL-ford-e-transit.md"],
+    notes: "Finnish list 28.8.2026 (VAT 25.5% incl., excl. vehicle tax): 425 BEV L4H3 Trend, 198 kW (269 hp), 73,115 EUR (the 135 kW row is 71,615). GVW 4,250 kg, payload 1,130 kg (incl. 75 kg driver) - kerb ~3,120 kg derived, not stated. Range 388 km WLTP (24.7 kWh/100 km). Battery 96 kWh (list ambiguous net/gross). Charging confirmed: DC 180 kW, AC OBC 22 kW (option), ProPower Onboard 2.3 kW (10 A) AC outlet (option J3EAJ, 1,700 EUR in the list) - not in the Finnish list. Cargo width/height, overall dims and curb-to-curb turning circle carried over from the seed entry - unverified (cargo length corrected to 4,256 mm per L4H3 spec - seed 3,630 mm was wrong). N2 towing not stated; H3 roof only exists on L4. 96 kWh also exists on 390 L4H3 (780 kg, 393 km, from 71,115) and 350 L4H3 (405 kg, 329 km, from 69,715) - see research/ford-e-transit.md.",
+    sources: ["research/ford-e-transit.md"],
   },
   {
     id: "renault-master-etech",
@@ -32,7 +32,7 @@ const VANS = [
       price_eur: 67790, motor_kw: 135,
     },
     notes: "Updated from July 2026 Estonian price list: price = EXTRA L3H3 (87 kWh, A7) 67,790. L3H3 exists only as EXTRA; 87 kWh is EXTRA-only (40 kWh variants, 174-176 km and 120 km/h, are 5,000 cheaper on L2H2/L3H2). Verified from the list: kerb 2,698 kg (no options), GVW 3,500 kg, range 404-416 km, 130 kW DC standard on EXTRA (50 kW on ADVANCE). AC charging 22 kW is part of option CHGS9 (AC 22 / DC 130 / V2L, +660 EUR; EXTRA standard CHGS6 = AC 11 kW). V2L 3.6 kW (16 A); 230V + 12V outlet wiring option (WIAD2 140 EUR / WIAD3 200 EUR). Payload ~802 kg derived (3,500 - 2,698). Overall 6,310 x 2,080 x 2,780 mm, wheelbase 4,215 mm - the old 7 m length estimate was wrong. Cargo dimensions and turning circle (curb-to-curb) not in the list - estimates. Motor: list gives 300 Nm only; 135 kW is the published spec for the 87 kWh motor - verify.",
-    sources: ["https://www.renaultgroup.com/", "Renault-MASTER-e-Tech-Hinnakiri.pdf", "research/Renault-MASTER-e-Tech-Hinnakiri.md"],
+    sources: ["https://www.renaultgroup.com/", "research/renault-master-etech.md"],
   },
   {
     id: "mercedes-esprinter",
@@ -48,7 +48,7 @@ const VANS = [
       price_eur: 100188, motor_kw: 150,
     },
     notes: "Updated from May 2026 Estonian list (Veho, incl. VAT): price = 420e A3 BASE 67,382 + 113 kWh (EV9) 30,503.60 + high roof (D03) 2,302.30 = ~100,188. Battery: 56/81 kWh on all models (81 = E8V +10,676.80), 113 kWh only on 414e/420e. Motor: 100 kW (314e/414e) or 150 kW (320e/420e). DC charging: 50 kW standard, 115 kW option (E6J); AC charging 11 kW standard (BASE list); no PTO/V2L outlet in the list. Range ~410 km derived from 113 kWh / 27.6 kWh/100km (420e A3); list gives no WLTP range. GVW 4,100 kg (414e/420e); kerb weight not in the list, so 3,400 kg stays a launch-coverage estimate and payload ~700 kg is derived (GVW - kerb) - verify against COC. Wheelbase A3 = 4,325 mm. Overall/cargo dimensions and turning circle (curb-to-curb) still from launch coverage.",
-    sources: ["https://www.mercedes-benz-vans.com/", "2026_05_esprinter_van_hinnakiri.pdf", "research/2026_05_esprinter_van_hinnakiri.md"],
+    sources: ["https://www.mercedes-benz-vans.com/", "research/mercedes-benz-esprinter.md"],
   },
   {
     id: "mercedes-esprinter-l2h3",
@@ -64,7 +64,7 @@ const VANS = [
       price_eur: 99895, motor_kw: 150,
     },
     notes: "Same spec as the L3H3 entry but on the A2 body (wheelbase 3,665 mm; high roof D03 offered on both lengths per the May 2026 Estonian list). AC charging 11 kW standard, no PTO/V2L outlet in the list. Price = BASE 420e A2 67,089 + 113 kWh (EV9) 30,503.60 + high roof (D03) 2,302.30 = ~99,895 (Estonia, VAT incl.). Range ~425 km derived from 113 kWh / 26.6 kWh/100km (420e A2). Kerb 3,250 kg estimated (~150 kg lighter than L3), payload ~850 kg derived (GVW 4,100 - kerb) - verify against COC. Cargo length ~3,450 mm and overall length ~6,165 mm estimated from the L3H3 figures minus the L3/L2 body delta - unverified.",
-    sources: ["https://www.mercedes-benz-vans.com/", "2026_05_esprinter_van_hinnakiri.pdf", "research/2026_05_esprinter_van_hinnakiri.md"],
+    sources: ["https://www.mercedes-benz-vans.com/", "research/mercedes-benz-esprinter.md"],
   },
   {
     id: "citroen-jumper-e",
@@ -80,7 +80,7 @@ const VANS = [
       price_eur: 51900, motor_kw: 205,
     },
     notes: "Real dealer offer (Auto Bassadone Laagri, 14.08.2026, valid to 22.08.2026) for DBWeb OÜ: price list 64,686 - 19.77% discount = 51,900 EUR (VAT incl.; 41,854.84 ex VAT). Price includes options (premium cabin package 500, ePTO 400V 650, full-LED headlights 813, adaptive cruise 725, heated rear-door glass 695, 10-in nav 1130, camera 240, ...) plus registration/services 1,880. Verified from the offer: 205 kW, battery 98 kWh net (110 gross), range 356 km, kerb 2,920 kg, GVW 3,500 kg (payload 580 kg derived), cargo 4,070 x 1,870 x 2,172 mm, overall 6,427 x 2,050 x 2,850 mm, 130 km/h, 22 kW 3-phase AC charging, warranty 3y/100,000 km. DC fast charge now confirmed at 150 kW from the Dutch MY14 price list (same 110 kWh architecture) - previous 80 kW estimate replaced; AC OBC 22 kW standard there too; no AC power outlet (the e-PTO option 4204 is 400 V DC 7 kW, not AC); turning circle 15.3 m curb-to-curb - same as the 4.25t sibling (identical L4 body; NL list: 14.3 m long wheelbase / 15.3 m long wheelbase + extra overhang). From 2025: registration tax 200 + annual tax 30 apply.",
-    sources: ["Pakkumine_Auto_Bassadone_OÜ_2026-08-14.pdf", "research/Pakkumine_Auto_Bassadone_OÜ_2026-08-14.md", "prijslijst-citroen-e-jumper-my14-per-1-april-2026.pdf", "research/prijslijst-citroen-e-jumper-my14-per-1-april-2026.md"],
+    sources: ["research/citroen-jumper-l4h3.md", "research/citroen-e-jumper.md"],
   },
   {
     id: "citroen-jumper-e-425t",
@@ -96,7 +96,7 @@ const VANS = [
       price_eur: 68244, motor_kw: 205,
     },
     notes: "Dutch MY14 price list per 1/4/2026 (NL): catalogue price 56,400 excl. / 68,244 incl. BTW (VAT incl. figure used, like the other entries' street prices). N2 (4.25t) homologation gives GVW 4,250 kg but top speed limited to 90 km/h in all drive modes. Kerb 2,940 kg, payload 1,310 kg, WLTP range 406 km combined (491 city, 273 Wh/km). Battery 110.6 installed / 97.8 usable kWh; 150 kW DC, 22 kW AC OBC (standard); no AC power outlet (e-PTO option 4204 is 400 V DC 7 kW); motor 205 kW/410 Nm (Power mode). Turning circle 15.3 m curb-to-curb (L4 = long wheelbase + extra overhang). Cargo 4,070 x 1,870 x 2,172 mm / 17 m³, overall 6,363 x 2,050 x 2,850 mm, wheelbase 4,035 mm. Battery warranty 8y/160,000 km (to 70% capacity).",
-    sources: ["prijslijst-citroen-e-jumper-my14-per-1-april-2026.pdf", "research/prijslijst-citroen-e-jumper-my14-per-1-april-2026.md"],
+    sources: ["research/citroen-e-jumper.md"],
   },
   {
     id: "citroen-jumper-e-l3h3",
@@ -112,6 +112,6 @@ const VANS = [
       price_eur: 67155, motor_kw: 205,
     },
     notes: "Dutch MY14 price list per 1/4/2026 (NL): catalogue price 55,500 excl. / 67,155 incl. BTW. N1 (3.5t) homologation: GVW 3,500 kg, 130 km/h (Normal/Power modes). Kerb 2,890 kg, payload 610 kg, WLTP range 359 km (dimensions table says 358; 310 Wh/km). Same 97.8 usable kWh battery, 150 kW DC, 22 kW AC (standard); no AC power outlet (e-PTO option 4204 is 400 V DC 7 kW); 205 kW/410 Nm (Power mode). Turning circle 14.3 m curb-to-curb (L3 = long wheelbase without extra overhang). Cargo 3,705 x 1,870 x 2,172 mm / 15 m³, overall 5,998 x 2,050 x 2,850 mm, wheelbase 4,035 mm.",
-    sources: ["prijslijst-citroen-e-jumper-my14-per-1-april-2026.pdf", "research/prijslijst-citroen-e-jumper-my14-per-1-april-2026.md"],
+    sources: ["research/citroen-e-jumper.md"],
   },
 ];

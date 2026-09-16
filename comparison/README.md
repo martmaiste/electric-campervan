@@ -17,7 +17,8 @@ Tooling to pick a base van for a fully electric camper build.
 | `data/criteria.js` | Criteria: id, label, unit, direction (which way is better), default weight |
 | `data/vans.js` | The candidate vans, one object each |
 | `research/` | Raw research notes per candidate + transcribed dealer price lists/offers (plain Markdown) |
-| `*.pdf` (project root) | Source dealer documents (price lists, offers) — the `.md` transcriptions in `research/` are derived from these |
+
+The original dealer PDFs (price lists, offers) are kept locally — some are confidential, so they are not published here. The `.md` transcriptions in `research/` are the reference for the data in `data/vans.js`.
 
 ## Adding a candidate
 
