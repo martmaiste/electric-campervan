@@ -129,7 +129,7 @@ Notes:
 
 ## Used in `data/vans.js` (citroen-jumper-e)
 
-- Price: **51 900 €** (discounted sale price, VAT incl., as configured in the offer)
+- Price: **64 686 €** (pre-discount price list price, VAT incl., as configured in the offer); the offer also grants a 19.77% discount to 51 900 €
 - Range 356 km, battery 98 kWh (net), motor 205 kW
 - Kerb 2 920 kg, GVW 3 500 kg → payload **580 kg** (derived)
 - Cargo 4 070 × 1 870 × 2 172 mm, overall 6 427 × 2 050 × 2 850 mm
