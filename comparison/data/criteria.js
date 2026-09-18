@@ -8,6 +8,7 @@ const CRITERIA = [
   { id: "max_charge_dc_kw",   label: "DC fast charge", unit: "kW",  direction: "high", weight: 7 },
   { id: "ac_charge_kw",       label: "AC charge",      unit: "kW",  direction: "high", weight: 10, hint: "On-board AC charging rate - campsite charging speed (3-phase 22 kW roughly halves an overnight top-up vs 11 kW)" },
   { id: "ac_outlet_kw",        label: "AC outlet",      unit: "kW",  direction: "high", weight: 10, hint: "V2L / power-outlet rating for running appliances off the battery (heated blanket, induction, coffee)" },
+    { id: "outlet_12v_a",        label: "12V outlet",     unit: "A",   direction: "high", weight: 3, hint: "12V auxiliary socket rating - feeds the camper's 12V system (lights, water pump, fridge, small electronics)" },
   { id: "payload_kg",         label: "Payload",        unit: "kg",  direction: "high", weight: 6,  hint: "What's left for camper build + people + gear after battery" },
   { id: "cargo_length_mm",     label: "Cargo length",   unit: "mm",  direction: "high", weight: 5, hint: "Longest dimension inside the cargo area" },
   { id: "cargo_width_mm",      label: "Cargo width",    unit: "mm",  direction: "high", weight: 4 },
