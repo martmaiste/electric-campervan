@@ -1,13 +1,10 @@
-// Candidate vans (dimensions draft). Drop-in ready for data/vans.js:
-// all 18 criterion keys from data/criteria.js are present.
-// `wheelbase_mm` is extra - not a scored criterion, kept for reference only.
+// Candidate vans - all 19 criterion keys from data/criteria.js are present.
 const VANS = [
   {
     id: "ford-e-transit-425-l4h3-96kwh",
     name: "Ford E-Transit 425 L4H3",
     status: "production",
     verified: true,
-    wheelbase_mm: 3750, // Ford E-Transit Spec Sheet (Wheelbase L4: 3750mm)
     criteria: {
       range_km: 402, // WLTP combined cycle (Ford Extended Range 89kWh usable)
       battery_kwh: 89, // Usable capacity (96 kWh gross capacity)
@@ -23,6 +20,7 @@ const VANS = [
       width_mm: 2059, // Overall width without mirrors
       length_mm: 6704, // Overall vehicle length (L4 Extended)
       turning_curb_m: 14.3, // Turning circle kerb-to-kerb
+      wheelbase_mm: 3750, // Ford E-Transit Spec Sheet (Wheelbase L4: 3750mm)
       price_eur: 71500, // German/EU base MSRP estimate before VAT/options
       motor_kw: 198, // Peak motor power output (269 PS / 198 kW)
       kerb_weight_kg: 2806, // Mass in running order
@@ -39,7 +37,6 @@ const VANS = [
     name: "Renault Master E-Tech L3H3",
     status: "production",
     verified: true,
-    wheelbase_mm: 4215, // Renault Master E-Tech Tech Specs (L3 Wheelbase: 4215mm)
     criteria: {
       range_km: 410, // WLTP driving range (87 kWh battery, Aerovan chassis)
       battery_kwh: 87, // Usable battery capacity
@@ -55,6 +52,7 @@ const VANS = [
       width_mm: 2080, // Exterior width without mirrors
       length_mm: 6310, // Total exterior vehicle length
       turning_curb_m: 13.4, // Turning radius kerb-to-kerb
+      wheelbase_mm: 4215, // Renault Master E-Tech Tech Specs (L3 Wheelbase: 4215mm)
       price_eur: 58000, // Base price estimate (EU market MSRP)
       motor_kw: 105, // Peak motor output (140 hp / 105 kW)
       kerb_weight_kg: 2375, // Kerb weight
@@ -71,7 +69,6 @@ const VANS = [
     name: "Mercedes-Benz eSprinter 420e L3H3 (A3)",
     status: "production",
     verified: true,
-    wheelbase_mm: 4325, // Mercedes eSprinter Datasheet (A3 Long Wheelbase: 4325mm)
     criteria: {
       range_km: 440, // WLTP combined range (113 kWh battery configuration)
       battery_kwh: 113, // Usable LFP battery capacity
@@ -87,6 +84,7 @@ const VANS = [
       width_mm: 2020, // Overall vehicle width without mirrors
       length_mm: 6967, // Total exterior vehicle length (A3)
       turning_curb_m: 14.4, // Turning circle diameter kerb-to-kerb
+      wheelbase_mm: 4325, // Mercedes eSprinter Datasheet (A3 Long Wheelbase: 4325mm)
       price_eur: 78000, // Base list price estimate in EUR (net ex. VAT)
       motor_kw: 150, // High output PSM motor rating (204 hp / 150 kW)
       kerb_weight_kg: 3010, // Unladen kerb weight without driver
@@ -104,7 +102,6 @@ const VANS = [
     name: "Mercedes-Benz eSprinter 420e L2H3 (A2)",
     status: "production",
     verified: true,
-    wheelbase_mm: 3665, // Mercedes eSprinter Datasheet (A2 Standard Wheelbase: 3665mm)
     criteria: {
       range_km: 440, // WLTP combined range (113 kWh battery)
       battery_kwh: 113, // Usable LFP battery capacity
@@ -120,6 +117,7 @@ const VANS = [
       width_mm: 2020, // Overall vehicle width without mirrors
       length_mm: 5932, // Total exterior vehicle length (A2)
       turning_curb_m: 12.4, // Turning circle diameter kerb-to-kerb
+      wheelbase_mm: 3665, // Mercedes eSprinter Datasheet (A2 Standard Wheelbase: 3665mm)
       price_eur: 75000, // Base list price estimate in EUR
       motor_kw: 150, // High output PSM motor rating (204 hp / 150 kW)
       kerb_weight_kg: 2950, // Unladen kerb weight without driver
@@ -136,7 +134,6 @@ const VANS = [
     name: "Citroën Jumper E L4H3 3.5t",
     status: "production",
     verified: true,
-    wheelbase_mm: 4035, // Stellantis Large Van Platform Spec (L4 Wheelbase: 4035mm)
     criteria: {
       range_km: 356, // WLTP certified range for 3.5t L4H3 version (130 km/h speed limit)
       battery_kwh: 110, // Usable battery capacity
@@ -152,6 +149,7 @@ const VANS = [
       width_mm: 2050, // Total exterior width without mirrors
       length_mm: 6363, // Total exterior length (L4)
       turning_curb_m: 14.3, // Turning circle diameter kerb-to-kerb
+      wheelbase_mm: 4035, // Stellantis Large Van Platform Spec (L4 Wheelbase: 4035mm)
       price_eur: 57000, // Indicative catalog price in EUR ex. VAT
       motor_kw: 200, // Electric motor output (270 hp / 200 kW)
       kerb_weight_kg: 2865, // Mass in running order
@@ -168,7 +166,6 @@ const VANS = [
     name: "Citroën Jumper E L4H3 4.25t",
     status: "production",
     verified: true,
-    wheelbase_mm: 4035, // Stellantis Large Van Platform Spec (L4 Wheelbase: 4035mm)
     criteria: {
       range_km: 406, // WLTP range for 4.25t version (90 km/h speed limit)
       battery_kwh: 110, // Usable battery capacity
@@ -184,6 +181,7 @@ const VANS = [
       width_mm: 2050, // Total exterior width without mirrors
       length_mm: 6363, // Total exterior length (L4)
       turning_curb_m: 14.3, // Turning circle diameter kerb-to-kerb
+      wheelbase_mm: 4035, // Stellantis Large Van Platform Spec (L4 Wheelbase: 4035mm)
       price_eur: 61000, // Indicative catalog price in EUR ex. VAT
       motor_kw: 200, // Electric motor output (270 hp / 200 kW)
       kerb_weight_kg: 2865, // Mass in running order
@@ -200,7 +198,6 @@ const VANS = [
     name: "Citroën Jumper E L3H3 3.5t",
     status: "production",
     verified: true,
-    wheelbase_mm: 4035, // Stellantis Large Van Platform Spec (L3 Wheelbase: 4035mm)
     criteria: {
       range_km: 358, // WLTP certified range for 3.5t L3H3 version
       battery_kwh: 110, // Usable battery capacity
@@ -216,6 +213,7 @@ const VANS = [
       width_mm: 2050, // Total exterior width without mirrors
       length_mm: 5998, // Total exterior length (L3)
       turning_curb_m: 14.3, // Turning circle diameter kerb-to-kerb
+      wheelbase_mm: 4035, // Stellantis Large Van Platform Spec (L3 Wheelbase: 4035mm)
       price_eur: 55000, // Indicative catalog price in EUR ex. VAT
       motor_kw: 200, // Electric motor output (270 hp / 200 kW)
       kerb_weight_kg: 2815, // Mass in running order

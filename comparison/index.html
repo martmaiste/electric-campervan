@@ -44,6 +44,19 @@ tr.selected td { box-shadow: inset 0 0 0 2px var(--accent); }
 td { font-size: 13px; }
 .rank { color: var(--muted); }
 .total { font-weight: 700; }
+th.total, td.total { border-left: 1px solid var(--line); }
+tr.groups th { border-bottom: 0; padding: 6px 9px 3px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; text-align: center; color: var(--muted); }
+.gh-energy     { background: #e4edfb; color: #1e4fd8; }
+.gh-weight     { background: #f9f0d9; color: #92400e; }
+.gh-cargo      { background: #def2e6; color: #065f46; }
+.gh-dimensions { background: #ece6f8; color: #5b21b6; }
+.gh-price      { background: #fde9e9; color: #b91c1c; }
+.gsep          { border-left: 2px solid; }
+.gsep-energy     { border-color: #a9c4ee; }
+.gsep-weight     { border-color: #e3cd96; }
+.gsep-cargo      { border-color: #a9d8bd; }
+.gsep-dimensions { border-color: #cfc0ea; }
+.gsep-price      { border-color: #eeb1b1; }
 .barwrap { display: flex; flex-direction: column; gap: 8px; }
 .bar-row { display: grid; grid-template-columns: 200px 1fr 80px; gap: 10px; align-items: center; }
 .bar-row .name { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -120,6 +133,9 @@ const state = {
   hideBelowMin: false,
   sort: { key: null, dir: "desc" },
 };
+
+// Scoreboard column groups (ids must match `group` in data/criteria.js).
+const GROUPS = { energy: "Energy & charging", weight: "Weights", cargo: "Cargo space", dimensions: "Dimensions & handling", price: "Price & motor" };
 
 function fmt(v, unit) {
   if (v == null) return "–";
@@ -283,20 +299,33 @@ function renderResults() {
 
   // scoreboard table
   const arrow = key => state.sort.key === key ? (state.sort.dir === "desc" ? " &#x2193;" : " &#x2191;") : "";
-  const th = (key, label, unit, title) =>
-    '<th class="sortable' + (state.sort.key === key ? " sorted" : "") + '" data-key="' + key + '" title="' + (title || label) + '">' + label + arrow(key) +
+  const th = (key, label, unit, title, cls) =>
+    '<th class="sortable' + (cls ? " " + cls : "") + (state.sort.key === key ? " sorted" : "") + '" data-key="' + key + '" title="' + (title || label) + '">' + label + arrow(key) +
     (unit ? "<br><span class=\"hint\">" + unit + "</span>" : "") + "</th>";
-  const head = "<tr>" + th("rank", "#", null, "Weighted rank") + th("name", "Van", null, "Van name") +
-    CRITERIA.map(c => th(c.id, c.label, c.unit || "", c.hint || c.label)).join("") +
-    th("total", "Total", null, "Weighted total score") + "</tr>";
+  // group header row: one cell per contiguous run of criteria sharing a group
+  const runs = [];
+  CRITERIA.forEach((c, i) => {
+    const g = c.group || "other";
+    const last = runs[runs.length - 1];
+    if (last && last.g === g) last.n++;
+    else runs.push({ g, n: 1, start: i });
+  });
+  const gsepAt = new Set(runs.slice(1).map(r => r.start));
+  const groupHead = "<tr class=\"groups\"><th></th><th></th>" +
+    runs.map(r => '<th class="gh gh-' + r.g + '" colspan="' + r.n + '">' + (GROUPS[r.g] || "") + "</th>").join("") +
+    "<th></th></tr>";
+  const head = groupHead + "<tr>" + th("rank", "#", null, "Weighted rank") + th("name", "Van", null, "Van name") +
+    CRITERIA.map((c, i) => th(c.id, c.label, c.unit || "", c.hint || c.label, gsepAt.has(i) ? "gsep gsep-" + (c.group || "other") : "")).join("") +
+    th("total", "Total", null, "Weighted total score", "total") + "</tr>";
   const rows = display.map(v => {
-    const cells = CRITERIA.map(c => {
+    const cells = CRITERIA.map((c, i) => {
       const s = res[v.id][c.id];
       const raw = v.criteria && v.criteria[c.id];
       const below = c.min != null && typeof raw === "number" && raw < c.min;
       const bg = s == null ? "transparent" : below ? "hsla(0 85% 45% / .55)" : "hsla(" + Math.round(120 * s) + " 70% 50% / .28)";
       const title = s == null ? "no data" : Math.round(s * 100) + "/100" + (below ? " — below minimum (" + c.min + " " + c.unit + ")" : "");
-      return '<td style="background:' + bg + '" title="' + title + '">' + (below ? "✗ " : "") + fmt(raw, c.unit) + "</td>";
+      const sep = gsepAt.has(i) ? ' class="gsep gsep-' + (c.group || "other") + '"' : "";
+      return "<td" + sep + ' style="background:' + bg + '" title="' + title + '">' + (below ? "✗ " : "") + fmt(raw, c.unit) + "</td>";
     }).join("");
     return '<tr class="van' + (state.selected === v.id ? " selected" : "") + '" data-id="' + v.id + '">' +
       '<td class="rank">' + rankOf[v.id] + "</td><td>" + v.name + "</td>" + cells +
