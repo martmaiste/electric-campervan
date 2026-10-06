@@ -225,4 +225,100 @@ const VANS = [
       "https://www.media.stellantis.com/em-en/citroen/press/new-citroen-e-jumper-a-payload-up-to-17-m-in-100-electric-mode"
     ],
   },
+  {
+    id: "farizon-sv-l3h3",
+    name: "Farizon SV L3H3 (SuperVAN 106 kWh)",
+    status: "production",
+    verified: true,
+    criteria: {
+      range_km: 398, // WLTP combined driving range with 106 kWh battery pack
+      battery_kwh: 106, // Gross battery capacity (NMC pack)
+      max_charge_dc_kw: 140, // DC fast charging peak rate (20-80% in ~36 min)
+      ac_charge_kw: 11, // Standard 3-phase AC onboard charger rate
+      ac_outlet_kw: 3.3, // V2L (Vehicle-to-Load) 230V auxiliary AC power outlet rating
+      outlet_12v_a: 15, // Standard 12V auxiliary power outlet rating (15A)
+      payload_kg: 1390, // Maximum gross payload capacity
+      cargo_length_mm: 3690, // Maximum interior usable cargo length at floor
+      cargo_width_mm: 1795, // Interior cargo width between side walls
+      cargo_height_mm: 1960, // Interior cargo floor-to-ceiling height (H3)
+      height_mm: 2500, // Total exterior vehicle height
+      width_mm: 1980, // Exterior width without mirrors
+      length_mm: 5995, // Total exterior overall length
+      turning_curb_m: 13.8, // Turning circle diameter kerb-to-kerb
+      wheelbase_mm: 3850, // Longest wheelbase distance (L3 configuration)
+      price_eur: 52000, // Estimated base starting MSRP in EU markets
+      motor_kw: 169, // Peak electric motor output (227 hp / 230 PS)
+      kerb_weight_kg: 2610, // Approximate unladen kerb weight
+      gvw_kg: 4000, // Gross Vehicle Weight rating (GVW)
+    },
+    notes: "Farizon SuperVAN / SV platform (Geely Group) 2024+",
+    sources: [
+      "https://farizonauto.com/supervan",
+      "https://en.wikipedia.org/wiki/Farizon_SV"
+    ],
+  },
+  {
+    id: "farizon-sv-l3h3-3t5",
+    name: "Farizon SV L3H3 (3.5t / 106 kWh)",
+    status: "production",
+    verified: true,
+    criteria: {
+      range_km: 398, // WLTP combined driving range (247 miles)
+      battery_kwh: 106, // NMC battery pack
+      max_charge_dc_kw: 140, // Peak DC fast charging rate
+      ac_charge_kw: 11, // Standard 3-phase onboard charger
+      ac_outlet_kw: 3.3, // V2L auxiliary AC output
+      outlet_12v_a: 15, // Standard 12V auxiliary power
+      payload_kg: 1035, // Payload capacity under 3.5t restriction
+      cargo_length_mm: 3695, // Interior floor cargo length
+      cargo_width_mm: 1795, // Interior cargo width
+      cargo_height_mm: 1960, // Interior floor-to-ceiling height (H3)
+      height_mm: 2500, // Exterior vehicle height
+      width_mm: 1980, // Exterior width (excluding mirrors)
+      length_mm: 5995, // Overall exterior length
+      turning_curb_m: 13.2, // Kerb-to-kerb turning circle diameter
+      wheelbase_mm: 3850, // L3 wheelbase
+      price_eur: 52000, // Estimated base starting MSRP (EU markets)
+      motor_kw: 170, // Peak motor output (228 hp / 231 PS)
+      kerb_weight_kg: 2465, // Unladen kerb weight
+      gvw_kg: 3500, // Standard B-License Gross Vehicle Weight limit
+    },
+    notes: "Farizon SuperVAN / SV platform (3.5T B-License homologation)",
+    sources: [
+      "https://farizonauto.com/supervan",
+      "https://www.leasepoint.co.uk/farizon-van-lease-deals/personal/sv/panelvan-l3-electric-170kw-106-kwh-h3-van-auto/"
+    ],
+  },
+  {
+    id: "maxus-edeliver9-l3h3",
+    name: "Maxus eDeliver 9 L3H3 (88.55 kWh)",
+    status: "production",
+    verified: true,
+    criteria: {
+      range_km: 296, // WLTP combined driving range (88.55 kWh battery pack)
+      battery_kwh: 88.55, // Gross battery capacity (NMC liquid-cooled pack)
+      max_charge_dc_kw: 80, // DC fast charge peak rate (20-80% in ~36-45 min)
+      ac_charge_kw: 11, // Standard 3-phase 11 kW AC onboard charger
+      ac_outlet_kw: 0, // No standard auxiliary AC V2L outlet available
+      outlet_12v_a: 15, // Standard 12V auxiliary power outlet rating (15A)
+      payload_kg: 860, // Payload on standard 3.5t B-License version (1,390 kg on 4.05t N2 variant)
+      cargo_length_mm: 3413, // Maximum interior floor usable cargo length
+      cargo_width_mm: 1800, // Interior cargo width between side walls
+      cargo_height_mm: 2019, // Interior cargo floor-to-ceiling height (H3)
+      height_mm: 2755, // Total exterior vehicle height
+      width_mm: 2062, // Exterior width without mirrors
+      length_mm: 5940, // Total exterior vehicle length
+      turning_curb_m: 14.1, // Turning circle diameter kerb-to-kerb
+      wheelbase_mm: 3760, // Longest wheelbase distance (L3 configuration)
+      price_eur: 61000, // Estimated base starting MSRP in EU markets
+      motor_kw: 150, // Peak electric motor output (204 hp / 310 Nm)
+      kerb_weight_kg: 2640, // Unladen kerb weight (3.5t B-license spec)
+      gvw_kg: 3500, // Standard Gross Vehicle Weight (4,050 kg option available for heavy commercial license)
+    },
+    notes: "Largest variant of SAIC Maxus eDeliver 9 platform (L3H3 with 88.55 kWh battery)",
+    sources: [
+      "https://saicmaxus.eu/models/edeliver-9/",
+      "https://saicmaxus.ie/models/edeliver-9/"
+    ],
+  },
 ];
