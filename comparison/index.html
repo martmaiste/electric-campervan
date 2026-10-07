@@ -37,13 +37,8 @@ h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: v
 .dual input[type=range]::-moz-range-thumb { pointer-events: auto; width: 11px; height: 11px; border-radius: 50%; background: #fff; border: 2px solid var(--accent); cursor: pointer; }
 #filter-reset { font: inherit; font-size: 11px; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; cursor: pointer; }
 #filter-reset:hover { color: var(--text); border-color: var(--muted); }
-.van-toggle { display: flex; align-items: center; gap: 8px; padding: 6px 6px; border-radius: 6px; cursor: pointer; user-select: none; }
-.van-toggle:hover { background: var(--panel2); }
-.van-toggle .name { flex: 1; font-size: 13px; }
 .badge { font-size: 11px; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
 .badge.warn { color: var(--warn); border-color: var(--warn); }
-.badge.concept { color: #2563eb; border-color: #2563eb; }
-.badge.min { color: #dc2626; border-color: #dc2626; }
 .tablewrap { overflow-x: auto; }
 table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
 th, td { padding: 7px 9px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
@@ -90,7 +85,7 @@ a { color: var(--accent); }
 <body>
 <header>
   <h1>⚡ EV Camper Van Comparison</h1>
-  <p class="sub">Tick candidates or drag the importance sliders and filters on the left — the scoreboard re-scores live. Click a row for notes &amp; sources. Data lives in <code>data/</code>.</p>
+  <p class="sub">Drag the importance sliders and filters on the left — the scoreboard re-scores live. Click a row for notes &amp; sources. Data lives in <code>data/</code>.</p>
 </header>
 
 <div class="layout">
@@ -105,19 +100,14 @@ a { color: var(--accent); }
       <div id="filters"></div>
     </section>
     <section>
-      <h2>Candidates</h2>
-      <div id="toggles"></div>
-    </section>
-    <section>
-      <details>
+      <details></details>
         <summary>How scoring works</summary>
         <p class="hint" style="margin:8px 0 0">
           Each criterion is min–max normalized across the vans you currently have included
           (0 = worst, 100 = best; “less is better” criteria are flipped).
           Total score = weighted average over all criteria at your slider values.
           Missing values score 0 — fill data in before comparing hard.
-          ⚠ = figures not yet verified against the spec sheet.
-          Criteria with a hard minimum are flagged red when a van falls below — you can hide those vans.
+          ⚠ = figures not yet verified against the sp          Criteria with a hard minimum are flagged red when a van falls below.hose vans.
         </p>
       </details>
     </section>
@@ -146,10 +136,8 @@ const $ = s => document.querySelector(s);
 
 const state = {
   weights: Object.fromEntries(CRITERIA.map(c => [c.id, c.weight])),
-  included: new Set(VANS.map(v => v.id)),
   metric: "range_km",
   selected: null,
-  hideBelowMin: false,
   filters: {},
   sort: { key: null, dir: "desc" },
 };
@@ -166,10 +154,6 @@ function fmt(v, unit) {
   return n + (unit ? " " + unit : "");
 }
 
-function minViolations(v) {
-  return CRITERIA.filter(c => c.min != null && v.criteria && v.criteria[c.id] != null && v.criteria[c.id] < c.min);
-}
-
 function passesFilters(v) {
   for (const c of CRITERIA) {
     const f = state.filters[c.id];
@@ -180,9 +164,7 @@ function passesFilters(v) {
 }
 
 function compute() {
-  let inc = VANS.filter(v => state.included.has(v.id));
-  if (state.hideBelowMin) inc = inc.filter(v => minViolations(v).length === 0);
-  inc = inc.filter(v => passesFilters(v));
+  const inc = VANS.filter(v => passesFilters(v));
   const res = {};
   const totalW = CRITERIA.reduce((a, c) => a + state.weights[c.id], 0);
   for (const v of inc) {
@@ -303,53 +285,6 @@ function buildControls() {
     });
     row.append(label, val, input);
     w.appendChild(row);
-  }
-
-  const tg = $("#toggles");
-  const hideRow = document.createElement("label");
-  hideRow.className = "van-toggle";
-  const hideBox = document.createElement("input");
-  hideBox.type = "checkbox";
-  hideBox.checked = state.hideBelowMin;
-  const hideName = document.createElement("span");
-  hideName.className = "name";
-  hideName.textContent = "Hide vans below minimums";
-  hideRow.append(hideBox, hideName);
-  hideBox.addEventListener("change", () => { state.hideBelowMin = hideBox.checked; renderResults(); });
-  tg.appendChild(hideRow);
-  for (const v of VANS) {
-    const label = document.createElement("label");
-    label.className = "van-toggle";
-    const box = document.createElement("input");
-    box.type = "checkbox";
-    box.checked = state.included.has(v.id);
-    const name = document.createElement("span");
-    name.className = "name";
-    name.textContent = v.name;
-    label.append(box, name);
-    if (v.status === "concept") {
-      const b = document.createElement("span");
-      b.className = "badge concept";
-      b.textContent = "concept";
-      label.appendChild(b);
-    } else if (v.verified === false) {
-      const b = document.createElement("span");
-      b.className = "badge warn";
-      b.textContent = "⚠ verify";
-      label.appendChild(b);
-    }
-    const viol = minViolations(v);
-    if (viol.length) {
-      const b = document.createElement("span");
-      b.className = "badge min";
-      b.textContent = "✗ below min: " + viol.map(c => c.label).join(", ");
-      label.appendChild(b);
-    }
-    box.addEventListener("change", () => {
-      box.checked ? state.included.add(v.id) : state.included.delete(v.id);
-      renderResults();
-    });
-    tg.appendChild(label);
   }
 
   const sel = $("#metric");
