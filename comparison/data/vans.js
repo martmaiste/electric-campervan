@@ -321,4 +321,100 @@ const VANS = [
       "https://saicmaxus.ie/models/edeliver-9/"
     ],
   },
+  {
+    id: "iveco-edaily-35s-3520l-h3-74kwh",
+    name: "IVECO eDaily 35S H3 L3 (3520L / 74 kWh)",
+    status: "production",
+    verified: true,
+    criteria: {
+      range_km: 235, // WLTP combined estimate (74 kWh 2-battery pack)
+      battery_kwh: 74, // Modular 2-battery pack (70 kWh usable)
+      max_charge_dc_kw: 80, // DC fast charging peak rate
+      ac_charge_kw: 11, // Standard 11 kW AC 3-phase (22 kW optional)
+      ac_outlet_kw: 3.5, // Optional ePTO / V2L AC outlet (up to 15 kW on heavy ePTO)
+      outlet_12v_a: 15, // Standard 12V auxiliary power socket
+      payload_kg: 920, // 3.5t B-License payload limit for 2-battery build
+      cargo_length_mm: 3540, // Interior cargo length at floor
+      cargo_width_mm: 1800, // Interior cargo width (1317 mm between wheel arches)
+      cargo_height_mm: 2100, // H3 interior floor-to-ceiling height
+      height_mm: 2860, // Total exterior vehicle height (H3)
+      width_mm: 2010, // Exterior width without mirrors
+      length_mm: 6180, // Total exterior overall length
+      turning_curb_m: 12.8, // Turning circle kerb-to-kerb
+      wheelbase_mm: 3520, // 3520L long-body wheelbase
+      price_eur: 68000, // Estimated base starting MSRP in EU markets
+      motor_kw: 140, // Peak electric motor output (188 hp / 400 Nm torque)
+      kerb_weight_kg: 2580, // Kerb weight (3.5t variant)
+      gvw_kg: 3500, // Standard B-License GVW limit
+    },
+    notes: "3.5t B-license high-roof panel van with 13.4 m³ cargo volume (3520L chassis)",
+    sources: [
+      "https://www.iveco.com/uk/eDaily/eDaily-Van",
+      "https://iveco-pts.com/en/products/iveco-edaily/iveco-edaily-van/"
+    ],
+  },
+  {
+    id: "iveco-edaily-42s-4100-h3-111kwh",
+    name: "IVECO eDaily 42S H3 L4 (4100 / 111 kWh)",
+    status: "production",
+    verified: true,
+    criteria: {
+      range_km: 300, // WLTP combined estimate (111 kWh 3-battery pack)
+      battery_kwh: 111, // Modular 3-battery pack (105 kWh usable)
+      max_charge_dc_kw: 115, // DC fast charging peak rate (3-battery option)
+      ac_charge_kw: 22, // 22 kW AC 3-phase onboard charger standard/optional on 3-battery trim
+      ac_outlet_kw: 15.0, // ePTO high-voltage AC output option
+      outlet_12v_a: 15, // Standard 12V auxiliary power socket
+      payload_kg: 1320, // Increased payload rating under 4.25t GVW
+      cargo_length_mm: 4680, // Interior cargo length at floor
+      cargo_width_mm: 1800, // Interior cargo width
+      cargo_height_mm: 2100, // H3 interior floor-to-ceiling height
+      height_mm: 2860, // Exterior vehicle height
+      width_mm: 2010, // Exterior width without mirrors
+      length_mm: 7280, // Total exterior length
+      turning_curb_m: 13.8, // Turning circle kerb-to-kerb
+      wheelbase_mm: 4100, // 4100 mm wheelbase
+      price_eur: 82000, // Estimated base price for 3-battery 4.25t chassis
+      motor_kw: 140, // Peak electric motor output (188 hp / 400 Nm torque)
+      kerb_weight_kg: 2930, // Unladen kerb weight
+      gvw_kg: 4250, // 4.25t alternative fuel license category GVW limit
+    },
+    notes: "4.25t heavy-duty fleet van with 18.0 m³ cargo volume and 3-battery pack",
+    sources: [
+      "https://www.iveco.com/uk/eDaily/eDaily-Van",
+      "https://iveco-pts.com/en/products/iveco-edaily/iveco-edaily-van/"
+    ],
+  },
+  {
+    id: "iveco-edaily-70c-4100l-h3-111kwh",
+    name: "IVECO eDaily 70C H3 L5 Extra Long (4100L / 111 kWh)",
+    status: "production",
+    verified: true,
+    criteria: {
+      range_km: 270, // WLTP combined range for heavy twin-wheel 7.2t variant
+      battery_kwh: 111, // Modular 3-battery pack (111 kWh gross / 105 kWh usable)
+      max_charge_dc_kw: 115, // DC fast charging peak rate
+      ac_charge_kw: 22, // 22 kW AC 3-phase onboard charger
+      ac_outlet_kw: 15.0, // High-voltage 15 kW ePTO capability for equipment/refrigeration
+      outlet_12v_a: 15, // Standard 12V auxiliary power socket
+      payload_kg: 3700, // Heavy commercial twin-rear-wheel payload capability
+      cargo_length_mm: 5125, // Maximum interior floor cargo length
+      cargo_width_mm: 1800, // Interior cargo width
+      cargo_height_mm: 2100, // H3 interior height
+      height_mm: 2860, // Total exterior vehicle height
+      width_mm: 2010, // Exterior width without mirrors
+      length_mm: 7680, // Largest overall exterior length (L5 extra long)
+      turning_curb_m: 14.5, // Turning circle kerb-to-kerb
+      wheelbase_mm: 4100, // 4100L wheelbase (extended rear overhang)
+      price_eur: 96000, // Estimated base price for 7.2t heavy variant
+      motor_kw: 140, // Peak electric motor output (188 hp / 400 Nm torque)
+      kerb_weight_kg: 3500, // Heavy commercial unladen kerb weight
+      gvw_kg: 7200, // 7.2-tonne heavy commercial GVW
+    },
+    notes: "Largest IVECO eDaily van variant: 19.6 m³ volume, twin rear wheels, 7.2t GVW rating",
+    sources: [
+      "https://www.iveco.com/uk/eDaily/eDaily-Van",
+      "https://iveco-pts.com/en/products/iveco-edaily/iveco-edaily-van/"
+    ],
+  },
 ];

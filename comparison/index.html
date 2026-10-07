@@ -197,7 +197,9 @@ function initFilters() {
     const max = vals.length ? Math.max(...vals) : 1;
     state.filters[c.id] = { lo: min, hi: max };
     if (!vals.length) continue;
-    const step = STEP_BY_UNIT[c.unit] || 1;
+    let step = STEP_BY_UNIT[c.unit] || 1;
+    // fall back to step 1 when the unit step can't reach the max end
+    if (Math.abs((max - min) / step - Math.round((max - min) / step)) > 1e-6) step = 1;
     const row = document.createElement("div");
     row.className = "filter-row";
     const label = document.createElement("div");
