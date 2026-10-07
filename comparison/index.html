@@ -23,6 +23,20 @@ h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: v
 .criterion-row .label { font-size: 13px; }
 .criterion-row .w { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
 .criterion-row input[type=range] { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); margin: 0; }
+.filter-row { margin-bottom: 10px; }
+.filter-row .label { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; margin-bottom: 2px; }
+.filter-row .fval { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dual { position: relative; height: 18px; }
+.dual .track, .dual .fill { position: absolute; top: 7px; height: 4px; border-radius: 2px; }
+.dual .track { left: 0; right: 0; background: var(--panel2); }
+.dual .fill { background: var(--accent); }
+.dual input[type=range] { position: absolute; left: 0; top: 0; width: 100%; height: 18px; margin: 0; -webkit-appearance: none; appearance: none; background: transparent; pointer-events: none; }
+.dual input[type=range]::-webkit-slider-runnable-track { background: transparent; height: 18px; }
+.dual input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; pointer-events: auto; width: 13px; height: 13px; margin-top: 2.5px; border-radius: 50%; background: #fff; border: 2px solid var(--accent); cursor: pointer; }
+.dual input[type=range]::-moz-range-track { background: transparent; }
+.dual input[type=range]::-moz-range-thumb { pointer-events: auto; width: 11px; height: 11px; border-radius: 50%; background: #fff; border: 2px solid var(--accent); cursor: pointer; }
+#filter-reset { font: inherit; font-size: 11px; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; cursor: pointer; }
+#filter-reset:hover { color: var(--text); border-color: var(--muted); }
 .van-toggle { display: flex; align-items: center; gap: 8px; padding: 6px 6px; border-radius: 6px; cursor: pointer; user-select: none; }
 .van-toggle:hover { background: var(--panel2); }
 .van-toggle .name { flex: 1; font-size: 13px; }
@@ -76,7 +90,7 @@ a { color: var(--accent); }
 <body>
 <header>
   <h1>⚡ EV Camper Van Comparison</h1>
-  <p class="sub">Tick candidates on the left and drag the importance sliders — the scoreboard re-scores live. Click a row for notes &amp; sources. Data lives in <code>data/</code>.</p>
+  <p class="sub">Tick candidates or drag the importance sliders and filters on the left — the scoreboard re-scores live. Click a row for notes &amp; sources. Data lives in <code>data/</code>.</p>
 </header>
 
 <div class="layout">
@@ -84,6 +98,11 @@ a { color: var(--accent); }
     <section>
       <h2>Importance (0–10)</h2>
       <div id="weights"></div>
+    </section>
+    <section>
+      <h2>Filters</h2>
+      <p class="</section>hint" style="margin:0 0 8px</h2>">Limit each criterion between two values — vans outside the range are hidden from the scoreboard. <button id="filter-reset" type="button">Reset all</button></p>
+      <div id="filters"></div>
     </section>
     <section>
       <h2>Candidates</h2>
@@ -131,11 +150,14 @@ const state = {
   metric: "range_km",
   selected: null,
   hideBelowMin: false,
+  filters: {},
   sort: { key: null, dir: "desc" },
 };
 
 // Scoreboard column groups (ids must match `group` in data/criteria.js).
 const GROUPS = { energy: "Energy & charging", weight: "Weights", cargo: "Cargo space", dimensions: "Dimensions & handling", price: "Price & motor" };
+// Step size per unit for the filter sliders.
+const STEP_BY_UNIT = { km: 2, kWh: 0.5, kW: 0.5, A: 1, kg: 10, mm: 10, m: 0.1, "€": 500 };
 
 function fmt(v, unit) {
   if (v == null) return "–";
@@ -148,9 +170,19 @@ function minViolations(v) {
   return CRITERIA.filter(c => c.min != null && v.criteria && v.criteria[c.id] != null && v.criteria[c.id] < c.min);
 }
 
+function passesFilters(v) {
+  for (const c of CRITERIA) {
+    const f = state.filters[c.id];
+    const raw = v.criteria && v.criteria[c.id];
+    if (typeof raw === "number" && (raw < f.lo || raw > f.hi)) return false;
+  }
+  return true;
+}
+
 function compute() {
   let inc = VANS.filter(v => state.included.has(v.id));
   if (state.hideBelowMin) inc = inc.filter(v => minViolations(v).length === 0);
+  inc = inc.filter(v => passesFilters(v));
   const res = {};
   const totalW = CRITERIA.reduce((a, c) => a + state.weights[c.id], 0);
   for (const v of inc) {
@@ -172,6 +204,81 @@ function compute() {
     res[v.id] = cells;
   }
   return { inc, res };
+}
+
+function initFilters() {
+  const host = $("#filters");
+  const ui = {};
+  for (const c of CRITERIA) {
+    const vals = VANS.map(v => v.criteria && v.criteria[c.id]).filter(n => typeof n === "number");
+    const min = vals.length ? Math.min(...vals) : 0;
+    const max = vals.length ? Math.max(...vals) : 1;
+    state.filters[c.id] = { lo: min, hi: max };
+    if (!vals.length) continue;
+    const step = STEP_BY_UNIT[c.unit] || 1;
+    const row = document.createElement("div");
+    row.className = "filter-row";
+    const label = document.createElement("div");
+    label.className = "label";
+    const name = document.createElement("span");
+    name.textContent = c.label + (c.unit ? " (" + c.unit + ")" : "");
+    if (c.hint) name.title = c.hint;
+    const fval = document.createElement("span");
+    fval.className = "fval";
+    label.append(name, fval);
+    const dual = document.createElement("div");
+    dual.className = "dual";
+    const track = document.createElement("div");
+    track.className = "track";
+    const fill = document.createElement("div");
+    fill.className = "fill";
+    const lo = document.createElement("input");
+    const hi = document.createElement("input");
+    for (const el of [lo, hi]) {
+      el.type = "range";
+      el.min = min;
+      el.max = max;
+      el.step = step;
+    }
+    lo.value = min;
+    hi.value = max;
+    const paint = () => {
+      fval.textContent = Number(+lo.value).toLocaleString("en") + " – " + Number(+hi.value).toLocaleString("en");
+      const l = 100 * (+lo.value - min) / (max - min || 1);
+      const r = 100 * (+hi.value - min) / (max - min || 1);
+      fill.style.left = l + "%";
+      fill.style.width = (r - l) + "%";
+    };
+    lo.addEventListener("input", () => {
+      if (+lo.value > +hi.value) lo.value = hi.value;
+      state.filters[c.id].lo = +lo.value;
+      paint();
+      renderResults();
+    });
+    hi.addEventListener("input", () => {
+      if (+hi.value < +lo.value) hi.value = lo.value;
+      state.filters[c.id].hi = +hi.value;
+      paint();
+      renderResults();
+    });
+    dual.append(track, fill, lo, hi);
+    row.append(label, dual);
+    host.appendChild(row);
+    ui[c.id] = { lo, hi, min, max, paint };
+    paint();
+  }
+  $("#filter-reset").addEventListener("click", () => {
+    for (const c of CRITERIA) {
+      const u = ui[c.id];
+      if (!u) continue;
+      state.filters[c.id].lo = u.min;
+      state.filters[c.id].hi = u.max;
+      u.lo.value = u.min;
+      u.hi.value = u.max;
+      u.paint();
+    }
+    renderResults();
+  });
 }
 
 function buildControls() {
@@ -364,6 +471,7 @@ function renderResults() {
 }
 
 buildControls();
+initFilters();
 renderResults();
 </script>
 </body>
