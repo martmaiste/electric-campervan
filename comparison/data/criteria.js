@@ -1,7 +1,6 @@
 // Criteria for comparing candidate EV camper vans.
 // - direction: "high" = more is better, "low" = less is better
 // - weight: default importance, 0-10 (adjustable in the UI)
-// - min: optional hard minimum - vans below it are flagged and can be hidden
 // - group: scoreboard column group; the order of entries in this file = column order.
 //   Groups must be contiguous. Labels and colors are defined in index.html.
 const CRITERIA = [
@@ -16,7 +15,7 @@ const CRITERIA = [
   { id: "gvw_kg",              label: "GVW",            unit: "kg",  direction: "high", weight: 0, group: "weight", hint: "Gross vehicle weight - the max allowed weight of the van (3.5t vs 4.25t class); above 3,500 kg needs C1E licence + higher taxes in most EU countries, but gives more fit-out headroom" },
   { id: "cargo_length_mm",     label: "Cargo length",   unit: "mm",  direction: "high", weight: 5, group: "cargo", hint: "Longest dimension inside the cargo area" },
   { id: "cargo_width_mm",      label: "Cargo width",    unit: "mm",  direction: "high", weight: 4, group: "cargo" },
-  { id: "cargo_height_mm",     label: "Cargo height",   unit: "mm",  direction: "high", weight: 9, min: 2000, group: "cargo", hint: "Standing height in the cargo area - hard minimum 2000 mm" },
+  { id: "cargo_height_mm",     label: "Cargo height",   unit: "mm",  direction: "high", weight: 9, group: "cargo", hint: "Standing height in the cargo area" },
   { id: "height_mm",          label: "Height",         unit: "mm",  direction: "high", weight: 5, group: "dimensions", hint: "Standing / sleeping headroom" },
   { id: "width_mm",           label: "Width",          unit: "mm",  direction: "high", weight: 4, group: "dimensions" },
   { id: "length_mm",           label: "Length",         unit: "mm",  direction: "low",  weight: 4, group: "dimensions", hint: "Shorter = easier to park and drive" },

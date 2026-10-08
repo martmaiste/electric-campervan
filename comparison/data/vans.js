@@ -417,4 +417,36 @@ const VANS = [
       "https://iveco-pts.com/en/products/iveco-edaily/iveco-edaily-van/"
     ],
   },
+  {
+    id: "zeus-max-cargo-l3h3",
+    name: "Zeus Max High Roof Cargo (100.9 kWh)",
+    status: "production",
+    verified: true,
+    criteria: {
+      range_km: 310, // Official factory range (100.9 kWh CATL battery pack)
+      battery_kwh: 100.9, // CATL battery pack capacity
+      max_charge_dc_kw: 100, // Peak DC fast charging (20–80% in 48 min)
+      ac_charge_kw: 22, // 22 kW 3-phase onboard AC charger (per 1-page flyer)
+      ac_outlet_kw: 0, // No V2L / AC power export output confirmed
+      outlet_12v_a: 15, // Standard commercial 12V auxiliary socket
+      payload_kg: 1890, // Stated maximum payload
+      cargo_length_mm: 3680, // Estimated based on L3 class sizing
+      cargo_width_mm: 1780, // Estimated standard commercial width
+      cargo_height_mm: 1950, // High-roof clearance for 14 m³ cargo volume
+      height_mm: 2720, // Total exterior vehicle height
+      width_mm: 1980, // Exterior width without mirrors
+      length_mm: 5990, // Overall exterior length
+      turning_curb_m: 14.9, // Official turning circle diameter kerb-to-kerb
+      wheelbase_mm: 3700, // Long wheelbase chassis
+      price_eur: 59000, // Commercial base MSRP estimate
+      motor_kw: 130, // Estimated peak electric motor output
+      kerb_weight_kg: 2600, // Unladen kerb weight (4,490 kg GVM - 1,890 kg payload)
+      gvw_kg: 4490, // Official Gross Vehicle Mass (4.5t class)
+    },
+    notes: "Pure One Zeus Max 14m³ high-roof cargo van (100.9 kWh CATL battery, 22 kW onboard AC charger)",
+    sources: [
+      "https://pure1corp.com/van/",
+      "https://pure1corp.com/wp-content/uploads/2026/09/zeus-1-page-flyer.pdf"
+    ],
+  },
 ];

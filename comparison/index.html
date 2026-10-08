@@ -96,18 +96,18 @@ a { color: var(--accent); }
     </section>
     <section>
       <h2>Filters</h2>
-      <p class="</section>hint" style="margin:0 0 8px</h2>">Limit each criterion between two values — vans outside the range are hidden from the scoreboard. <button id="filter-reset" type="button">Reset all</button></p>
+      <p class="hint" style="margin:0 0 8px">Limit each criterion between two values — vans outside the range are hidden from the scoreboard. <button id="filter-reset" type="button">Reset all</button></p>
       <div id="filters"></div>
     </section>
     <section>
-      <details></details>
+      <details>
         <summary>How scoring works</summary>
         <p class="hint" style="margin:8px 0 0">
           Each criterion is min–max normalized across the vans you currently have included
           (0 = worst, 100 = best; “less is better” criteria are flipped).
           Total score = weighted average over all criteria at your slider values.
           Missing values score 0 — fill data in before comparing hard.
-          ⚠ = figures not yet verified against the sp          Criteria with a hard minimum are flagged red when a van falls below.hose vans.
+          ⚠ = figures not yet verified against the spec sheet of those vans.
         </p>
       </details>
     </section>
@@ -365,11 +365,10 @@ function renderResults() {
     const cells = CRITERIA.map((c, i) => {
       const s = res[v.id][c.id];
       const raw = v.criteria && v.criteria[c.id];
-      const below = c.min != null && typeof raw === "number" && raw < c.min;
-      const bg = s == null ? "transparent" : below ? "hsla(0 85% 45% / .55)" : "hsla(" + Math.round(120 * s) + " 70% 50% / .28)";
-      const title = s == null ? "no data" : Math.round(s * 100) + "/100" + (below ? " — below minimum (" + c.min + " " + c.unit + ")" : "");
+      const bg = s == null ? "transparent" : "hsla(" + Math.round(120 * s) + " 70% 50% / .28)";
+      const title = s == null ? "no data" : Math.round(s * 100) + "/100";
       const sep = gsepAt.has(i) ? ' class="gsep gsep-' + (c.group || "other") + '"' : "";
-      return "<td" + sep + ' style="background:' + bg + '" title="' + title + '">' + (below ? "✗ " : "") + fmt(raw, c.unit) + "</td>";
+      return "<td" + sep + ' style="background:' + bg + '" title="' + title + '">' + fmt(raw, c.unit) + "</td>";
     }).join("");
     return '<tr class="van' + (state.selected === v.id ? " selected" : "") + '" data-id="' + v.id + '">' +
       '<td class="rank">' + rankOf[v.id] + "</td><td>" + v.name + "</td>" + cells +
