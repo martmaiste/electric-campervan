@@ -275,7 +275,7 @@ const VANS = [
       gvw_kg: 4000, // Gross Vehicle Weight rating (GVW)
       acc: "standard", // Full speed range adaptive cruise control is standard ADAS
     },
-    notes: "Farizon SuperWAN / SV platform (Geely Group) 2024+",
+    notes: "Farizon SuperVAN / SV platform (Geely Group) 2024+",
     sources: [
       "https://farizonauto.com/supervan",
       "https://en.wikipedia.org/wiki/Farizon_SV"
