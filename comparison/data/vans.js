@@ -1,10 +1,12 @@
-// Candidate vans - all 19 criterion keys from data/criteria.js are present.
+// Candidate vans - all 20 criterion keys from data/criteria.js are present.
 const VANS = [
   {
     id: "ford-e-transit-425-l4h3-96kwh",
     name: "Ford E-Transit 425 L4H3",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "DE",
     criteria: {
       range_km: 402, // WLTP combined cycle (Ford Extended Range 89kWh usable)
       battery_kwh: 89, // Usable capacity (96 kWh gross capacity)
@@ -25,6 +27,7 @@ const VANS = [
       motor_kw: 198, // Peak motor power output (269 PS / 198 kW)
       kerb_weight_kg: 2806, // Mass in running order
       gvw_kg: 4250, // Gross Vehicle Weight rating (425 series)
+      acc: "optional", // Intelligent Adaptive Cruise Control available as option
     },
     notes: "Extended length, High roof / Jumbo",
     sources: [
@@ -37,6 +40,8 @@ const VANS = [
     name: "Renault Master E-Tech L3H3",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 410, // WLTP driving range (87 kWh battery, Aerovan chassis)
       battery_kwh: 87, // Usable battery capacity
@@ -57,6 +62,7 @@ const VANS = [
       motor_kw: 105, // Peak motor output (140 hp / 105 kW)
       kerb_weight_kg: 2375, // Kerb weight
       gvw_kg: 4000, // Gross Vehicle Weight rating
+      acc: "optional", // Adaptive cruise control with Stop & Go is optional
     },
     notes: "New Master / Aerovan generation 2024+",
     sources: [
@@ -69,6 +75,8 @@ const VANS = [
     name: "Mercedes-Benz eSprinter 420e L3H3 (A3)",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 440, // WLTP combined range (113 kWh battery configuration)
       battery_kwh: 113, // Usable LFP battery capacity
@@ -89,6 +97,7 @@ const VANS = [
       motor_kw: 150, // High output PSM motor rating (204 hp / 150 kW)
       kerb_weight_kg: 3010, // Unladen kerb weight without driver
       gvw_kg: 4250, // Gross Vehicle Weight rating (420e series)
+      acc: "optional", // DISTRONIC Adaptive Cruise Control (Option code ET4)
     },
     notes: "Long wheelbase (A3), High roof",
     sources: [
@@ -102,6 +111,8 @@ const VANS = [
     name: "Mercedes-Benz eSprinter 420e L2H3 (A2)",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 440, // WLTP combined range (113 kWh battery)
       battery_kwh: 113, // Usable LFP battery capacity
@@ -122,6 +133,7 @@ const VANS = [
       motor_kw: 150, // High output PSM motor rating (204 hp / 150 kW)
       kerb_weight_kg: 2950, // Unladen kerb weight without driver
       gvw_kg: 4250, // Gross Vehicle Weight rating (420e series)
+      acc: "optional", // DISTRONIC Adaptive Cruise Control (Option code ET4)
     },
     notes: "Standard wheelbase (A2), High roof",
     sources: [
@@ -134,6 +146,8 @@ const VANS = [
     name: "Citroën Jumper E L4H3 3.5t",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 356, // WLTP certified range for 3.5t L4H3 version (130 km/h speed limit)
       battery_kwh: 110, // Usable battery capacity
@@ -154,6 +168,7 @@ const VANS = [
       motor_kw: 200, // Electric motor output (270 hp / 200 kW)
       kerb_weight_kg: 2865, // Mass in running order
       gvw_kg: 3500, // Maximum allowed mass (3.5 tonnes GVW)
+      acc: "optional", // Adaptive cruise control with Stop & Go is optional (Level 2 Drive Assist)
     },
     notes: "L4 has the longest rear overhang; H3 is super high roof.",
     sources: [
@@ -166,6 +181,8 @@ const VANS = [
     name: "Citroën Jumper E L4H3 4.25t",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 406, // WLTP range for 4.25t version (90 km/h speed limit)
       battery_kwh: 110, // Usable battery capacity
@@ -186,6 +203,7 @@ const VANS = [
       motor_kw: 200, // Electric motor output (270 hp / 200 kW)
       kerb_weight_kg: 2865, // Mass in running order
       gvw_kg: 4250, // Maximum allowed mass (4.25 tonnes GVW)
+      acc: "optional", // Adaptive cruise control with Stop & Go is optional (Level 2 Drive Assist)
     },
     notes: "Identical footprint to the 3.5t model; higher Gross Vehicle Weight.",
     sources: [
@@ -198,6 +216,8 @@ const VANS = [
     name: "Citroën Jumper E L3H3 3.5t",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 358, // WLTP certified range for 3.5t L3H3 version
       battery_kwh: 110, // Usable battery capacity
@@ -218,6 +238,7 @@ const VANS = [
       motor_kw: 200, // Electric motor output (270 hp / 200 kW)
       kerb_weight_kg: 2815, // Mass in running order
       gvw_kg: 3500, // Maximum allowed mass (3.5 tonnes GVW)
+      acc: "optional", // Adaptive cruise control with Stop & Go is optional (Level 2 Drive Assist)
     },
     notes: "L3 shares the 4035mm wheelbase with L4, but has a shorter rear overhang.",
     sources: [
@@ -230,6 +251,8 @@ const VANS = [
     name: "Farizon SV L3H3 (SuperVAN 106 kWh)",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 398, // WLTP combined driving range with 106 kWh battery pack
       battery_kwh: 106, // Gross battery capacity (NMC pack)
@@ -250,8 +273,9 @@ const VANS = [
       motor_kw: 169, // Peak electric motor output (227 hp / 230 PS)
       kerb_weight_kg: 2610, // Approximate unladen kerb weight
       gvw_kg: 4000, // Gross Vehicle Weight rating (GVW)
+      acc: "standard", // Full speed range adaptive cruise control is standard ADAS
     },
-    notes: "Farizon SuperVAN / SV platform (Geely Group) 2024+",
+    notes: "Farizon SuperWAN / SV platform (Geely Group) 2024+",
     sources: [
       "https://farizonauto.com/supervan",
       "https://en.wikipedia.org/wiki/Farizon_SV"
@@ -262,6 +286,8 @@ const VANS = [
     name: "Farizon SV L3H3 (3.5t / 106 kWh)",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 398, // WLTP combined driving range (247 miles)
       battery_kwh: 106, // NMC battery pack
@@ -282,6 +308,7 @@ const VANS = [
       motor_kw: 170, // Peak motor output (228 hp / 231 PS)
       kerb_weight_kg: 2465, // Unladen kerb weight
       gvw_kg: 3500, // Standard B-License Gross Vehicle Weight limit
+      acc: "standard", // Full speed range adaptive cruise control is standard ADAS
     },
     notes: "Farizon SuperVAN / SV platform (3.5T B-License homologation)",
     sources: [
@@ -294,6 +321,8 @@ const VANS = [
     name: "Maxus eDeliver 9 L3H3 (88.55 kWh)",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 296, // WLTP combined driving range (88.55 kWh battery pack)
       battery_kwh: 88.55, // Gross battery capacity (NMC liquid-cooled pack)
@@ -314,6 +343,7 @@ const VANS = [
       motor_kw: 150, // Peak electric motor output (204 hp / 310 Nm)
       kerb_weight_kg: 2640, // Unladen kerb weight (3.5t B-license spec)
       gvw_kg: 3500, // Standard Gross Vehicle Weight (4,050 kg option available for heavy commercial license)
+      acc: "standard", // Full-speed adaptive cruise control is standard
     },
     notes: "Largest variant of SAIC Maxus eDeliver 9 platform (L3H3 with 88.55 kWh battery)",
     sources: [
@@ -326,6 +356,8 @@ const VANS = [
     name: "IVECO eDaily 35S H3 L3 (3520L / 74 kWh)",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 235, // WLTP combined estimate (74 kWh 2-battery pack)
       battery_kwh: 74, // Modular 2-battery pack (70 kWh usable)
@@ -346,6 +378,7 @@ const VANS = [
       motor_kw: 140, // Peak electric motor output (188 hp / 400 Nm torque)
       kerb_weight_kg: 2580, // Kerb weight (3.5t variant)
       gvw_kg: 3500, // Standard B-License GVW limit
+      acc: "optional", // Adaptive cruise control is an option
     },
     notes: "3.5t B-license high-roof panel van with 13.4 m³ cargo volume (3520L chassis)",
     sources: [
@@ -358,6 +391,8 @@ const VANS = [
     name: "IVECO eDaily 42S H3 L4 (4100 / 111 kWh)",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 300, // WLTP combined estimate (111 kWh 3-battery pack)
       battery_kwh: 111, // Modular 3-battery pack (105 kWh usable)
@@ -378,6 +413,7 @@ const VANS = [
       motor_kw: 140, // Peak electric motor output (188 hp / 400 Nm torque)
       kerb_weight_kg: 2930, // Unladen kerb weight
       gvw_kg: 4250, // 4.25t alternative fuel license category GVW limit
+      acc: "optional", // Adaptive cruise control is an option
     },
     notes: "4.25t heavy-duty fleet van with 18.0 m³ cargo volume and 3-battery pack",
     sources: [
@@ -390,6 +426,8 @@ const VANS = [
     name: "IVECO eDaily 70C H3 L5 Extra Long (4100L / 111 kWh)",
     status: "production",
     verified: true,
+    year: "2024",
+    region: "EU",
     criteria: {
       range_km: 270, // WLTP combined range for heavy twin-wheel 7.2t variant
       battery_kwh: 111, // Modular 3-battery pack (111 kWh gross / 105 kWh usable)
@@ -410,6 +448,7 @@ const VANS = [
       motor_kw: 140, // Peak electric motor output (188 hp / 400 Nm torque)
       kerb_weight_kg: 3500, // Heavy commercial unladen kerb weight
       gvw_kg: 7200, // 7.2-tonne heavy commercial GVW
+      acc: "optional", // Adaptive cruise control is an option
     },
     notes: "Largest IVECO eDaily van variant: 19.6 m³ volume, twin rear wheels, 7.2t GVW rating",
     sources: [
@@ -422,6 +461,8 @@ const VANS = [
     name: "Zeus Max High Roof Cargo (100.9 kWh)",
     status: "production",
     verified: true,
+    year: "2026",
+    region: "EU",
     criteria: {
       range_km: 310, // Official factory range (100.9 kWh CATL battery pack)
       battery_kwh: 100.9, // CATL battery pack capacity
@@ -442,6 +483,7 @@ const VANS = [
       motor_kw: 130, // Estimated peak electric motor output
       kerb_weight_kg: 2600, // Unladen kerb weight (4,490 kg GVM - 1,890 kg payload)
       gvw_kg: 4490, // Official Gross Vehicle Mass (4.5t class)
+      acc: "unverified", // Adaptive cruise control status unverified
     },
     notes: "Pure One Zeus Max 14m³ high-roof cargo van (100.9 kWh CATL battery, 22 kW onboard AC charger)",
     sources: [

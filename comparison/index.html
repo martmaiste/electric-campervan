@@ -60,12 +60,14 @@ tr.groups th { border-bottom: 0; padding: 6px 9px 3px; font-size: 11px; font-wei
 .gh-cargo      { background: #def2e6; color: #065f46; }
 .gh-dimensions { background: #ece6f8; color: #5b21b6; }
 .gh-price      { background: #fde9e9; color: #b91c1c; }
+.gh-equipment  { background: #e2f0f6; color: #155e75; }
 .gsep          { border-left: 2px solid; }
 .gsep-energy     { border-color: #a9c4ee; }
 .gsep-weight     { border-color: #e3cd96; }
 .gsep-cargo      { border-color: #a9d8bd; }
 .gsep-dimensions { border-color: #cfc0ea; }
 .gsep-price      { border-color: #eeb1b1; }
+.gsep-equipment  { border-color: #a3cfe0; }
 .barwrap { display: flex; flex-direction: column; gap: 8px; }
 .bar-row { display: grid; grid-template-columns: 200px 1fr 80px; gap: 10px; align-items: center; }
 .bar-row .name { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -143,12 +145,20 @@ const state = {
 };
 
 // Scoreboard column groups (ids must match `group` in data/criteria.js).
-const GROUPS = { energy: "Energy & charging", weight: "Weights", cargo: "Cargo space", dimensions: "Dimensions & handling", price: "Price & motor" };
+const GROUPS = { energy: "Energy & charging", weight: "Weights", cargo: "Cargo space", dimensions: "Dimensions & handling", price: "Price & motor", equipment: "Equipment" };
 // Step size per unit for the filter sliders.
 const STEP_BY_UNIT = { km: 2, kWh: 0.5, kW: 0.5, A: 1, kg: 10, mm: 10, m: 0.1, "€": 500 };
 
+// Numeric score value of a raw criterion value (enum criteria map via c.values).
+function rawVal(c, raw) {
+  if (typeof raw === "number") return raw;
+  if (c.values && typeof raw === "string" && raw in c.values) return c.values[raw];
+  return null;
+}
+
 function fmt(v, unit) {
   if (v == null) return "–";
+  if (typeof v === "string") return v;
   const n = Number(v).toLocaleString("en");
   if (unit === "€") return "€" + n;
   return n + (unit ? " " + unit : "");
@@ -170,14 +180,14 @@ function compute() {
   for (const v of inc) {
     const cells = {};
     for (const c of CRITERIA) {
-      const vals = inc.map(x => x.criteria && x.criteria[c.id]).filter(n => typeof n === "number");
-      const raw = v.criteria && v.criteria[c.id];
+      const vals = inc.map(x => rawVal(c, x.criteria && x.criteria[c.id])).filter(n => typeof n === "number");
+      const val = rawVal(c, v.criteria && v.criteria[c.id]);
       let s;
-      if (typeof raw !== "number") s = null;
+      if (val == null) s = null;
       else if (vals.length < 2) s = 1;
       else {
         const min = Math.min(...vals), max = Math.max(...vals);
-        s = max === min ? 1 : c.direction === "high" ? (raw - min) / (max - min) : (max - raw) / (max - min);
+        s = max === min ? 1 : c.direction === "high" ? (val - min) / (max - min) : (max - val) / (max - min);
       }
       cells[c.id] = s;
     }
@@ -312,8 +322,8 @@ function renderResults() {
       if (key === "rank") return rankOf[v.id];
       if (key === "name") return v.name;
       if (key === "total") return res[v.id].total;
-      const raw = v.criteria && v.criteria[key];
-      return typeof raw === "number" ? raw : null;
+      const cDef = CRITERIA.find(c => c.id === key);
+      return cDef ? rawVal(cDef, v.criteria && v.criteria[key]) : null;
     };
     display.sort((a, b) => {
       const va = valOf(a), vb = valOf(b);
@@ -327,16 +337,18 @@ function renderResults() {
 
   // bar chart
   const cDef = CRITERIA.find(c => c.id === state.metric);
-  const nums = sorted.map(x => x.criteria && x.criteria[state.metric]).filter(n => typeof n === "number");
+  const nums = sorted.map(x => rawVal(cDef, x.criteria && x.criteria[state.metric])).filter(n => typeof n === "number");
   const max = nums.length ? Math.max(...nums) : 0;
   $("#chart").innerHTML = sorted.length
     ? sorted.map(v => {
-        const val = v.criteria && v.criteria[state.metric];
+        const raw = v.criteria && v.criteria[state.metric];
+        const val = rawVal(cDef, raw);
         const pct = val != null && max > 0 ? Math.max(2, 100 * val / max) : 0;
+        const label = typeof raw === "string" ? raw : val == null ? "–" : fmt(val, cDef.unit);
         return '<div class="bar-row">' +
           '<span class="name" title="' + v.name + '">' + v.name + '</span>' +
           '<div class="bar-bg"><div class="bar" style="width:' + pct + '%"></div></div>' +
-          '<span class="val">' + (val == null ? "–" : fmt(val, cDef.unit)) + '</span>' +
+          '<span class="val">' + label + '</span>' +
           '</div>';
       }).join("")
     : '<p class="hint">No candidates selected.</p>';
@@ -391,9 +403,10 @@ function renderResults() {
   const d = $("#detail");
   const v = VANS.find(x => x.id === state.selected);
   if (v && res[v.id]) {
-    const kvs = CRITERIA.map(c =>
-      "<div>" + c.label + "</div><div>" + (v.criteria && v.criteria[c.id] != null ? fmt(v.criteria[c.id], c.unit) : "–") + "</div>"
-    ).join("");
+    const kvs = "<div>Year</div><div>" + (v.year || "–") + "</div><div>Region</div><div>" + (v.region || "–") + "</div>" +
+      CRITERIA.map(c =>
+        "<div>" + c.label + "</div><div>" + (v.criteria && v.criteria[c.id] != null ? fmt(v.criteria[c.id], c.unit) : "–") + "</div>"
+      ).join("");
     d.hidden = false;
     d.innerHTML = "<h2>" + v.name + " — " + res[v.id].total.toFixed(1) + " pts" +
       (v.verified === false ? ' <span class="badge warn">⚠ values need verification</span>' : "") + "</h2>" +

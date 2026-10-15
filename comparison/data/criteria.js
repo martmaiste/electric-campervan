@@ -1,6 +1,7 @@
 // Criteria for comparing candidate EV camper vans.
 // - direction: "high" = more is better, "low" = less is better
 // - weight: default importance, 0-10 (adjustable in the UI)
+// - values: optional enum map for string criteria (string value → 0..1 score)
 // - group: scoreboard column group; the order of entries in this file = column order.
 //   Groups must be contiguous. Labels and colors are defined in index.html.
 const CRITERIA = [
@@ -23,4 +24,5 @@ const CRITERIA = [
   { id: "wheelbase_mm",        label: "Wheelbase",      unit: "mm",  direction: "low",  weight: 0, group: "dimensions", hint: "Distance between axles - shorter = easier to park and manoeuvre; longer = more cargo length" },
   { id: "price_eur",          label: "Base price",     unit: "€",   direction: "low",  weight: 5, group: "price", hint: "Approx. base price, no fit-out" },
   { id: "motor_kw",           label: "Motor",          unit: "kW",  direction: "high", weight: 3, group: "price" },
+  { id: "acc",                label: "ACC",            unit: "",    direction: "high", weight: 0, group: "equipment", values: { standard: 1, optional: 0.5, unverified: 0 }, hint: "Automatic (adaptive) cruise control - standard, optional, or unverified" },
 ];
